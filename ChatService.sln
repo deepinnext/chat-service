@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0C895700-5E23-48F0-837F-82E8B1ECB905}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{F9276EF2-F949-4A74-A278-044BE967E0AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepin.Chatting.Domain", "src\Deepin.Chatting.Domain\Deepin.Chatting.Domain.csproj", "{1ADE9521-05FF-4880-8E54-EF6EBA5A7AEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepin.Chatting.Application", "src\Deepin.Chatting.Application\Deepin.Chatting.Application.csproj", "{62749D6A-928E-4A9C-A615-5B5B4539D5BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepin.Chatting.Infrastructure", "src\Deepin.Chatting.Infrastructure\Deepin.Chatting.Infrastructure.csproj", "{AF7E635D-650F-4214-9692-6B1A37A014BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepin.Chatting.API", "src\Deepin.Chatting.API\Deepin.Chatting.API.csproj", "{EACC6514-29EC-411E-AE35-60715E6BED52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1ADE9521-05FF-4880-8E54-EF6EBA5A7AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ADE9521-05FF-4880-8E54-EF6EBA5A7AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ADE9521-05FF-4880-8E54-EF6EBA5A7AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ADE9521-05FF-4880-8E54-EF6EBA5A7AEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62749D6A-928E-4A9C-A615-5B5B4539D5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62749D6A-928E-4A9C-A615-5B5B4539D5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62749D6A-928E-4A9C-A615-5B5B4539D5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62749D6A-928E-4A9C-A615-5B5B4539D5BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF7E635D-650F-4214-9692-6B1A37A014BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7E635D-650F-4214-9692-6B1A37A014BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF7E635D-650F-4214-9692-6B1A37A014BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF7E635D-650F-4214-9692-6B1A37A014BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EACC6514-29EC-411E-AE35-60715E6BED52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EACC6514-29EC-411E-AE35-60715E6BED52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EACC6514-29EC-411E-AE35-60715E6BED52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EACC6514-29EC-411E-AE35-60715E6BED52}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1ADE9521-05FF-4880-8E54-EF6EBA5A7AEF} = {0C895700-5E23-48F0-837F-82E8B1ECB905}
+		{62749D6A-928E-4A9C-A615-5B5B4539D5BD} = {0C895700-5E23-48F0-837F-82E8B1ECB905}
+		{AF7E635D-650F-4214-9692-6B1A37A014BF} = {0C895700-5E23-48F0-837F-82E8B1ECB905}
+		{EACC6514-29EC-411E-AE35-60715E6BED52} = {0C895700-5E23-48F0-837F-82E8B1ECB905}
+	EndGlobalSection
+EndGlobal
