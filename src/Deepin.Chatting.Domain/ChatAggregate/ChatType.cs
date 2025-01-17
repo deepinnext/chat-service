@@ -1,4 +1,4 @@
-﻿namespace Deepin.Chatting.Domain.ChatAggregates;
+﻿namespace Deepin.Chatting.Domain.ChatAggregate;
 public enum ChatType
 {
     Direct = 1,

@@ -4,9 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
+EXPOSE 5000
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -15,7 +13,7 @@ WORKDIR /src
 COPY ["src/Deepin.Chatting.API/Deepin.Chatting.API.csproj", "src/Deepin.Chatting.API/"]
 RUN dotnet restore "./src/Deepin.Chatting.API/Deepin.Chatting.API.csproj"
 COPY . .
-WORKDIR "/src/src/Deepin.Chatting.API"
+WORKDIR "/src/Deepin.Chatting.API"
 RUN dotnet build "./Deepin.Chatting.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
