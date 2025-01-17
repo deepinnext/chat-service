@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0C895700-5E23-48F0-837F-82E8B1ECB905}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{F9276EF2-F949-4A74-A278-044BE967E0AA}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\docker-image-ci.yaml = .github\workflows\docker-image-ci.yaml
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepin.Chatting.Domain", "src\Deepin.Chatting.Domain\Deepin.Chatting.Domain.csproj", "{1ADE9521-05FF-4880-8E54-EF6EBA5A7AEF}"
 EndProject

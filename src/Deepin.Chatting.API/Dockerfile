@@ -13,7 +13,7 @@ WORKDIR /src
 COPY ["src/Deepin.Chatting.API/Deepin.Chatting.API.csproj", "src/Deepin.Chatting.API/"]
 RUN dotnet restore "./src/Deepin.Chatting.API/Deepin.Chatting.API.csproj"
 COPY . .
-WORKDIR "/src/Deepin.Chatting.API"
+WORKDIR "src/Deepin.Chatting.API"
 RUN dotnet build "./Deepin.Chatting.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
