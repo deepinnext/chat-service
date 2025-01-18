@@ -34,7 +34,13 @@ public static class HostExtensions
         app.UseServiceDefaults();
 
         app.MapHub<ChatsHub>("/hub/chats");
-
+        app.MapGet("/api/about", () => new
+        {
+            Name = "Deepin.Chatting.API",
+            Version = "1.0.0",
+            DeepinEnv = app.Configuration["DEEPIN_ENV"],
+            app.Environment.EnvironmentName
+        });
         return app;
     }
     private static IServiceCollection AddCustomSignalR(this IServiceCollection services, IConfiguration configuration)
