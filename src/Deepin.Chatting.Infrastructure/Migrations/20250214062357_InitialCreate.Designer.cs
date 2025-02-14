@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Deepin.Chatting.Infrastructure.Migrations
 {
     [DbContext(typeof(ChattingDbContext))]
-    [Migration("20250117080306_InitialCreate")]
+    [Migration("20250214062357_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -46,8 +46,9 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer")
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("type");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -66,24 +67,28 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("text")
+                        .HasColumnName("display_name");
+
+                    b.Property<DateTime>("JoinedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnName("joined_at");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_admin");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("role");
 
-                    b.Property<bool>("IsOwner")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_owner");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("user_id");
 
-                    b.Property<Guid?>("chat_id")
+                    b.Property<Guid>("chat_id")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -91,6 +96,37 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                     b.HasIndex("chat_id");
 
                     b.ToTable("chat_members", "chatting");
+                });
+
+            modelBuilder.Entity("Deepin.Chatting.Domain.ChatAggregate.ChatReadStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("chat_id");
+
+                    b.Property<DateTime>("LastReadAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_read_at");
+
+                    b.Property<string>("LastReadMessageId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("last_read_message_id ");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("chat_read_statuses", "chatting");
                 });
 
             modelBuilder.Entity("Deepin.Chatting.Domain.ChatAggregate.Chat", b =>
@@ -113,7 +149,6 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                                 .HasColumnName("is_public");
 
                             b1.Property<string>("Name")
-                                .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("name");
 
@@ -137,12 +172,24 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                     b.HasOne("Deepin.Chatting.Domain.ChatAggregate.Chat", null)
                         .WithMany("Members")
                         .HasForeignKey("chat_id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Deepin.Chatting.Domain.ChatAggregate.ChatReadStatus", b =>
+                {
+                    b.HasOne("Deepin.Chatting.Domain.ChatAggregate.Chat", null)
+                        .WithMany("ReadStatuses")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Deepin.Chatting.Domain.ChatAggregate.Chat", b =>
                 {
                     b.Navigation("Members");
+
+                    b.Navigation("ReadStatuses");
                 });
 #pragma warning restore 612, 618
         }

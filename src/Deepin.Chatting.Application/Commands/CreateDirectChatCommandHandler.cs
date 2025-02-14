@@ -17,7 +17,7 @@ public class CreateDirectChatCommandHandler(IMapper mapper, IChatRepository chat
             type: ChatType.Direct,
             createdBy: _userContext.UserId,
             groupInfo: null);
-        request.UserIds.ToList().ForEach(userId => chat.AddMember(new ChatMember(userId)));
+        request.UserIds.ToList().ForEach(userId => chat.AddMember(new ChatMember(userId, ChatMemberRole.Owner)));
 
         _chatRepository.Add(chat);
         await _chatRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);

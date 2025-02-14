@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Deepin.Domain" Version="0.0.2" />
+    <PackageReference Include="Deepin.Domain" Version="0.1.0" />
   </ItemGroup>
 
 </Project>

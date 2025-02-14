@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Deepin.EventBus" Version="0.0.4" />
-    <PackageReference Include="Deepin.EventBus.RabbitMQ" Version="0.0.6" />
-    <PackageReference Include="Deepin.Infrastructure" Version="0.0.3" />
+    <PackageReference Include="Deepin.EventBus" Version="0.1.0" />
+    <PackageReference Include="Deepin.EventBus.RabbitMQ" Version="0.1.0" />
+    <PackageReference Include="Deepin.Infrastructure" Version="0.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

@@ -4,14 +4,16 @@ using Deepin.Domain;
 namespace Deepin.Chatting.Domain.ChatAggregate;
 public class Chat : Entity<Guid>, IAggregateRoot
 {
-    private ICollection<ChatMember> _members = [];
+    private List<ChatMember> _members = [];
+    private List<ChatReadStatus> _readStatuses = [];
     public ChatType Type { get; private set; }
     public string CreatedBy { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
     public bool IsDeleted { get; private set; }
     public GroupInfo? GroupInfo { get; private set; }
-    public IReadOnlyCollection<ChatMember> Members => (IReadOnlyCollection<ChatMember>)_members;
+    public IReadOnlyCollection<ChatMember> Members => _members;
+    public IReadOnlyCollection<ChatReadStatus> ReadStatuses => _readStatuses;
     public Chat()
     {
         CreatedBy = string.Empty;
@@ -24,7 +26,7 @@ public class Chat : Entity<Guid>, IAggregateRoot
         Type = type;
         CreatedBy = createdBy;
         GroupInfo = groupInfo;
-        this.AddMember(new ChatMember(createdBy, true));
+        this.AddMember(new ChatMember(createdBy, ChatMemberRole.Owner));
     }
     public void UpdateGroupInfo(GroupInfo groupInfo)
     {

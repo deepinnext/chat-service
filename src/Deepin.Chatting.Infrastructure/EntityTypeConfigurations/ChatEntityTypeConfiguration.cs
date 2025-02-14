@@ -13,20 +13,22 @@ public class ChatEntityTypeConfiguration : IEntityTypeConfiguration<Chat>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id").HasColumnType("uuid").HasValueGenerator(typeof(SequentialGuidValueGenerator));
 
-        builder.Property(x => x.CreatedBy).HasColumnName("created_by");
+        builder.Property(x => x.CreatedBy).HasColumnName("created_by").IsRequired();
+        builder.Property(x => x.Type).HasColumnName("type").HasConversion<string>().IsRequired();
         builder.Property(x => x.CreatedAt).HasColumnName("created_at").HasColumnType("timestamp with time zone");
         builder.Property(x => x.UpdatedAt).HasColumnName("updated_at").HasColumnType("timestamp with time zone");
         builder.Property(x => x.IsDeleted).HasColumnName("is_deleted");
-        builder.Property(x => x.Type).HasColumnName("type");
 
         builder.OwnsOne(c => c.GroupInfo, s =>
         {
-            s.Property(x => x.Name).HasColumnName("name");
-            s.Property(x => x.UserName).HasColumnName("user_name");
-            s.Property(x => x.Description).HasColumnName("description");
-            s.Property(x => x.AvatarFileId).HasColumnName("avatar_file_id");
+            s.Property(x => x.Name).HasColumnName("name").IsRequired(false);
+            s.Property(x => x.UserName).HasColumnName("user_name").IsRequired(false);
+            s.Property(x => x.Description).HasColumnName("description").IsRequired(false);
+            s.Property(x => x.AvatarFileId).HasColumnName("avatar_file_id").IsRequired(false);
             s.Property(x => x.IsPublic).HasColumnName("is_public");
         });
-        builder.HasMany(x => x.Members).WithOne().HasForeignKey("chat_id").OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Members).WithOne().HasForeignKey("chat_id");
+        builder.HasMany(x => x.ReadStatuses).WithOne().HasForeignKey(x => x.ChatId);
     }
 }

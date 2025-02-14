@@ -1,17 +1,17 @@
 using Dapper;
+using Deepin.Application.Pagination;
 using Deepin.Chatting.Application.Constants;
 using Deepin.Chatting.Application.Models;
 using Deepin.Chatting.Domain.ChatAggregate;
-using Deepin.Infrastructure.Extensions;
-using Microsoft.Extensions.Caching.Distributed;
+using Deepin.Infrastructure.Caching;
 using Npgsql;
 
 namespace Deepin.Chatting.Application.Queries;
 
-public class ChatQueries(string connectionString, IDistributedCache cache) : QueryBase, IChatQueries
+public class ChatQueries(string connectionString, ICacheManager cacheManager) : QueryBase, IChatQueries
 {
     private readonly string _connectionString = connectionString;
-    private readonly IDistributedCache _cache = cache;
+    private readonly ICacheManager _cacheManager = cacheManager;
 
     public async Task<IEnumerable<ChatDto>> GetChats(string userId)
     {
@@ -27,7 +27,7 @@ public class ChatQueries(string connectionString, IDistributedCache cache) : Que
     }
     public async Task<ChatDto?> GetChatById(Guid id)
     {
-        return await _cache.GetOrCreateAsync(CacheKeys.GetChatByIdCacheKey(id), async () =>
+        return await _cacheManager.GetOrSetAsync(CacheKeys.GetChatByIdCacheKey(id), async () =>
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
@@ -43,9 +43,53 @@ public class ChatQueries(string connectionString, IDistributedCache cache) : Que
         using (var connection = new NpgsqlConnection(_connectionString))
         {
             connection.Open();
-            var sql = @"SELECT chat_id ChatId, user_id UserId, is_admin IsAdmin, is_deleted IsDeleted, created_at CreatedAt, updated_at UpdatedAt FROM chat_members WHERE chat_id = @chatId AND user_id = @userId";
-            return await connection.QueryFirstOrDefaultAsync<ChatMemberDto>(BuildSqlWithSchema(sql), new { chatId, userId });
+            var sql = @"SELECT * FROM chat_members WHERE chat_id = @chatId AND user_id = @userId";
+            var row = await connection.QueryFirstOrDefaultAsync<ChatMemberDto>(BuildSqlWithSchema(sql), new { chatId, userId });
+            return row is not null ? MapChatMemberDto(row) : null;
         }
+    }
+    public async Task<IPagination<ChatMemberDto>> GetChatMembers(Guid chatId, int offset, int limit)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+            var query = @"SELECT * FROM chat_members WHERE chat_id = @chatId ORDER BY joined_at DESC OFFSET @offset LIMIT @limit";
+            var countQuery = "SELECT COUNT(*) FROM chat_members WHERE chat_id = @chatId";
+            var count = await connection.ExecuteScalarAsync<int>(BuildSqlWithSchema(countQuery), new { chatId });
+            var rows = await connection.QueryAsync<dynamic>(BuildSqlWithSchema(query), new { chatId, offset, limit });
+            return new Pagination<ChatMemberDto>(rows.Select(MapChatMemberDto), offset, limit, count);
+        }
+    }
+    public async Task<IEnumerable<ChatReadStatusDto>> GetChatReadStatusesAsync(string userId)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+            var sql = @"SELECT * FROM chat_read_statuses WHERE user_id = @userId";
+            var rows = await connection.QueryAsync<dynamic>(BuildSqlWithSchema(sql), new { userId });
+            return rows is null ? [] : rows.Select(MapChatReadStatusDto);
+        }
+    }
+    private ChatReadStatusDto MapChatReadStatusDto(dynamic row)
+    {
+        return new ChatReadStatusDto
+        {
+            ChatId = row.chat_id,
+            UserId = row.user_id,
+            LastReadMessageId = row.last_read_message_id,
+            LastReadAt = row.last_read_at
+        };
+    }
+    private ChatMemberDto MapChatMemberDto(dynamic row)
+    {
+        return new ChatMemberDto
+        {
+            UserId = row.user_id,
+            DisplayName = row.display_name,
+            JoinedAt = row.joined_at,
+            UpdatedAt = row.updated_at,
+            Role = Enum.Parse<ChatMemberRole>(row.role, true)
+        };
     }
     private ChatDto MapChatDto(dynamic result)
     {

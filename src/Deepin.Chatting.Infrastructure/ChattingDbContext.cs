@@ -11,12 +11,14 @@ public class ChattingDbContext : DbContextBase<ChattingDbContext>
     public ChattingDbContext(DbContextOptions<ChattingDbContext> options, IMediator? mediator = null) : base(options, mediator)
     {
     }
-    public DbSet<Chat> Chats { get; set; } = null!;
+    public DbSet<Chat> Chats { get; set; }
+    public DbSet<ChatReadStatus> ChatReadStatuses { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasDefaultSchema("chatting");
         modelBuilder.ApplyConfiguration(new ChatEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ChatMemberEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ChatReadStatusEntityTypeConfiguration());
     }
 }

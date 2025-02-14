@@ -3,19 +3,21 @@
 namespace Deepin.Chatting.Domain.ChatAggregate;
 public class ChatMember : Entity<Guid>
 {
-    public string UserId { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public bool IsOwner { get; set; }
-    public bool IsAdmin { get; set; }
+    public string UserId { get; private set; }
+    public string? DisplayName { get; private set; }
+    public DateTime JoinedAt { get; private set; }
+    public DateTime UpdatedAt { get; private set; }
+    public ChatMemberRole Role { get; private set; }
     public ChatMember()
     {
         UserId = string.Empty;
-        CreatedAt = DateTime.UtcNow;
+        JoinedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
     }
-    public ChatMember(string userId, bool isOwner = false, bool isAdmin = false) : this()
+    public ChatMember(string userId, ChatMemberRole role, string? displayName = null) : this()
     {
         UserId = userId;
-        IsOwner = isOwner;
-        IsAdmin = isAdmin;
+        Role = role;
+        DisplayName = displayName ?? string.Empty;
     }
 }

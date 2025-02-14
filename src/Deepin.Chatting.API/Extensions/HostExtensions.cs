@@ -3,6 +3,7 @@ using Deepin.Chatting.Application.Extensions;
 using Deepin.Chatting.Infrastructure;
 using Deepin.Chatting.Infrastructure.Extensions;
 using Deepin.EventBus.RabbitMQ;
+using Deepin.Infrastructure.Caching;
 using Deepin.Infrastructure.Extensions;
 using Deepin.ServiceDefaults.Extensions;
 using Microsoft.AspNetCore.DataProtection;
@@ -23,7 +24,10 @@ public static class HostExtensions
             assembly: typeof(HostExtensions).Assembly)
         .AddMigration<ChattingDbContext>()
         .AddApplication(connectionString)
-        .AddDefaultCache(builder.Configuration.GetConnectionString("Redis"))
+        .AddDefaultCache(new RedisCacheOptions
+        {
+            ConnectionString = builder.Configuration.GetConnectionString("RedisConnection") ?? throw new ArgumentNullException("RedisConnection")
+        })
         .AddDefaultUserContexts()
         .AddCustomSignalR(builder.Configuration);
 

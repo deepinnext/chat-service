@@ -1,6 +1,6 @@
 using Deepin.Chatting.Application.Queries;
+using Deepin.Infrastructure.Caching;
 using FluentValidation;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Deepin.Chatting.Application.Extensions;
@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
     }
     private static IServiceCollection AddQueries(this IServiceCollection services, string connectionString)
     {
-        services.AddScoped<IChatQueries>(sp => new ChatQueries(connectionString, sp.GetRequiredService<IDistributedCache>()));
+        services.AddScoped<IChatQueries>(sp => new ChatQueries(connectionString, sp.GetRequiredService<ICacheManager>()));
         return services;
     }
 }

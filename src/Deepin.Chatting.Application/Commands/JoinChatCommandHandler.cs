@@ -13,7 +13,7 @@ public class JoinChatCommandHandler(IChatRepository chatRepository) : IRequestHa
         {
             throw new DomainException($"Chat with Id {request.Id} was not found");
         }
-        chat.AddMember(new ChatMember(request.UserId));
+        chat.AddMember(new ChatMember(request.UserId, ChatMemberRole.Member));
         chatRepository.Update(chat);
         await chatRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
