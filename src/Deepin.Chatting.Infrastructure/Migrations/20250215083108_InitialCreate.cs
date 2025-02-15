@@ -45,7 +45,7 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                     user_id = table.Column<string>(type: "text", nullable: false),
                     display_name = table.Column<string>(type: "text", nullable: true),
                     joined_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     role = table.Column<string>(type: "text", nullable: false),
                     chat_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -66,15 +66,15 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                 schema: "chatting",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     chat_id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<string>(type: "text", nullable: false),
-                    last_read_message_id = table.Column<string>(name: "last_read_message_id ", type: "text", nullable: false),
+                    last_read_message_id = table.Column<string>(type: "text", nullable: false),
                     last_read_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_chat_read_statuses", x => x.Id);
+                    table.PrimaryKey("PK_chat_read_statuses", x => x.id);
                     table.ForeignKey(
                         name: "FK_chat_read_statuses_chats_chat_id",
                         column: x => x.chat_id,

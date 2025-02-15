@@ -11,5 +11,4 @@ public class ChatDto
     public DateTime UpdatedAt { get; set; }
     public bool IsDeleted { get; set; }
     public ChatInfo? GroupInfo { get; set; }
-    public IEnumerable<ChatMemberDto> Members { get; set; } = [];
 }

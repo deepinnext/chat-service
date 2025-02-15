@@ -80,6 +80,12 @@ namespace Deepin.Chatting.API.Controllers
             var statuses = await _chatQueries.GetChatReadStatusesAsync(_userContext.UserId);
             return Ok(statuses);
         }
+        [HttpGet("{id}/read-status")]
+        public async Task<ActionResult<ChatReadStatusDto>> GetReadStatus(Guid id)
+        {
+            var status = await _chatQueries.GetChatReadStatusAsync(id, _userContext.UserId);
+            return Ok(status);
+        }
         [HttpPost("{id}/read-status")]
         public async Task<IActionResult> UpdateReadStatus(Guid id, [FromBody] UpdateChatReadStatusCommand command)
         {

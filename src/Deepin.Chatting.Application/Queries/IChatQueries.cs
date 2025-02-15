@@ -10,4 +10,5 @@ public interface IChatQueries
     Task<ChatMemberDto?> GetChatMember(Guid chatId, string userId);
     Task<IPagination<ChatMemberDto>> GetChatMembers(Guid chatId, int offset, int limit);
     Task<IEnumerable<ChatReadStatusDto>> GetChatReadStatusesAsync(string userId);
+    Task<ChatReadStatusDto> GetChatReadStatusAsync(Guid chatId, string userId);
 }

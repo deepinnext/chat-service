@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Deepin.Chatting.Infrastructure.Migrations
 {
     [DbContext(typeof(ChattingDbContext))]
-    [Migration("20250214062357_InitialCreate")]
+    [Migration("20250215083108_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace Deepin.Chatting.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("chatting")
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -81,7 +81,8 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                         .HasColumnName("role");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -102,7 +103,8 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<Guid>("ChatId")
                         .HasColumnType("uuid")
@@ -115,7 +117,7 @@ namespace Deepin.Chatting.Infrastructure.Migrations
                     b.Property<string>("LastReadMessageId")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("last_read_message_id ");
+                        .HasColumnName("last_read_message_id");
 
                     b.Property<string>("UserId")
                         .IsRequired()

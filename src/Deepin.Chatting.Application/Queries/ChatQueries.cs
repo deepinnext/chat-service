@@ -19,7 +19,7 @@ public class ChatQueries(string connectionString, ICacheManager cacheManager) : 
         {
             connection.Open();
             var sql = @"SELECT c.* FROM chats c 
-                        JOIN chat_member cm ON c.id = cm.chat_id
+                        JOIN chat_members cm ON c.id = cm.chat_id
                         WHERE c.is_deleted = false AND cm.user_id = @userId";
             var result = await connection.QueryAsync<dynamic>(BuildSqlWithSchema(sql), new { userId });
             return result.Select(MapChatDto);
@@ -70,6 +70,17 @@ public class ChatQueries(string connectionString, ICacheManager cacheManager) : 
             return rows is null ? [] : rows.Select(MapChatReadStatusDto);
         }
     }
+
+    public async Task<ChatReadStatusDto> GetChatReadStatusAsync(Guid chatId, string userId)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+            var sql = @"SELECT * FROM chat_read_statuses WHERE chat_id = @chatId AND user_id = @userId";
+            var row = await connection.QueryFirstOrDefaultAsync<dynamic>(BuildSqlWithSchema(sql), new { chatId, userId });
+            return row is null ? null : MapChatReadStatusDto(row);
+        }
+    }
     private ChatReadStatusDto MapChatReadStatusDto(dynamic row)
     {
         return new ChatReadStatusDto
@@ -96,14 +107,13 @@ public class ChatQueries(string connectionString, ICacheManager cacheManager) : 
         var dto = new ChatDto
         {
             Id = result.id,
-            Type = result.type,
+            Type = Enum.Parse<ChatType>(result.type, true),
             CreatedAt = result.created_at,
             UpdatedAt = result.updated_at,
             CreatedBy = result.created_by,
             IsDeleted = result.is_deleted
         };
-        ChatType chatType = Enum.Parse<ChatType>(result.type, true);
-        if (chatType != ChatType.Direct)
+        if (dto.Type != ChatType.Direct)
         {
             dto.GroupInfo = new ChatInfo
             {

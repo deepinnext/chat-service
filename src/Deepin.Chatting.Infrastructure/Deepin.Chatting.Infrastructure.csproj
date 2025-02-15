@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Deepin.EventBus" Version="0.1.0" />
     <PackageReference Include="Deepin.EventBus.RabbitMQ" Version="0.1.0" />
-    <PackageReference Include="Deepin.Infrastructure" Version="0.1.0" />
+    <PackageReference Include="Deepin.Infrastructure" Version="0.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

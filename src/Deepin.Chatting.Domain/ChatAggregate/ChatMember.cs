@@ -20,4 +20,14 @@ public class ChatMember : Entity<Guid>
         Role = role;
         DisplayName = displayName ?? string.Empty;
     }
+    public void UpdateRole(ChatMemberRole role)
+    {
+        Role = role;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    public void UpdateDisplayName(string displayName)
+    {
+        DisplayName = displayName;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
