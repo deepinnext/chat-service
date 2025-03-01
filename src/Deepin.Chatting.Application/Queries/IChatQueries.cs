@@ -1,5 +1,5 @@
-using Deepin.Application.Pagination;
 using Deepin.Chatting.Application.Models;
+using Deepin.Infrastructure.Pagination;
 
 namespace Deepin.Chatting.Application.Queries;
 

@@ -1,9 +1,9 @@
 using Dapper;
-using Deepin.Application.Pagination;
 using Deepin.Chatting.Application.Constants;
 using Deepin.Chatting.Application.Models;
 using Deepin.Chatting.Domain.ChatAggregate;
 using Deepin.Infrastructure.Caching;
+using Deepin.Infrastructure.Pagination;
 using Npgsql;
 
 namespace Deepin.Chatting.Application.Queries;
@@ -25,20 +25,20 @@ public class ChatQueries(string connectionString, ICacheManager cacheManager) : 
             return result.Select(MapChatDto);
         }
     }
-    public async Task<ChatDto?> GetChatById(Guid id)
+    public async Task<ChatDto> GetChatById(Guid id)
     {
-        return await _cacheManager.GetOrSetAsync(CacheKeys.GetChatByIdCacheKey(id), async () =>
+        return await _cacheManager.GetOrSetAsync<ChatDto>(CacheKeys.GetChatByIdCacheKey(id), async () =>
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
                 var sql = @"SELECT * FROM chats WHERE id = @id";
                 var result = await connection.QueryFirstOrDefaultAsync<dynamic>(BuildSqlWithSchema(sql), new { id });
-                return result != null ? MapChatDto(result) : null;
+                return MapChatDto(result);
             }
         });
     }
-    public async Task<ChatMemberDto?> GetChatMember(Guid chatId, string userId)
+    public async Task<ChatMemberDto> GetChatMember(Guid chatId, string userId)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
         {
@@ -104,6 +104,7 @@ public class ChatQueries(string connectionString, ICacheManager cacheManager) : 
     }
     private ChatDto MapChatDto(dynamic result)
     {
+        if (result is null) return null;
         var dto = new ChatDto
         {
             Id = result.id,

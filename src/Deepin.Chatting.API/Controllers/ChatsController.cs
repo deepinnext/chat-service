@@ -1,9 +1,9 @@
-using Deepin.Application.Pagination;
 using Deepin.Chatting.Application.Commands;
 using Deepin.Chatting.Application.Models;
 using Deepin.Chatting.Application.Queries;
 using Deepin.Chatting.Domain.ChatAggregate;
 using Deepin.Domain;
+using Deepin.Infrastructure.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
